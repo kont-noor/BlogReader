@@ -1,6 +1,7 @@
 package nt.kont.blog.reader;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.View;
@@ -39,7 +40,11 @@ public class BlogReader extends Activity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int pos, long id){
                 infoTextView.setText(posts.get(pos));
+                Intent intent = new Intent(BlogReader.this, ShowActivity.class);
+                intent.putExtra("item name", posts.get(pos));
+                startActivity(intent);
             }
         });
     }
 }
+
