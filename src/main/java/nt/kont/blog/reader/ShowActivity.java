@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.widget.TextView;
+import nt.kont.blog.reader.Post;
 
 public class ShowActivity extends Activity{
     @Override
@@ -12,7 +13,10 @@ public class ShowActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show);
 
-        TextView text = (TextView)findViewById(R.id.postTextView);
-        text.setText(getIntent().getExtras().getString("item name"));
+        Post post = Post.getById(getIntent().getExtras().getInt("post_id"));
+        TextView title = (TextView)findViewById(R.id.titleTextView);
+        TextView body = (TextView)findViewById(R.id.bodyTextView);
+        title.setText(post.getTitle());
+        body.setText(post.getBody());
     }
 }

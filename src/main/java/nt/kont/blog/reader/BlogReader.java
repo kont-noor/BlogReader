@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import nt.kont.blog.reader.PostListAdapter;
+import nt.kont.blog.reader.Post;
 
 public class BlogReader extends Activity
 {
@@ -25,27 +26,21 @@ public class BlogReader extends Activity
         ListView postListView = (ListView)findViewById(R.id.postListView);
         final TextView infoTextView = (TextView)findViewById(R.id.infoTextView);
 
-        final ArrayList<String> posts = new ArrayList<String>();
+        final ArrayList<Post> posts = Post.getAll();
         final PostListAdapter adapter;
         adapter = new PostListAdapter(this, posts);
         postListView.setAdapter(adapter);
-
-        //fake loading posts
-        for(int i=0; i<10; i++){
-            posts.add(0, "post #" + i);
-            adapter.notifyDataSetChanged();
-        }
+        adapter.notifyDataSetChanged();
 
         //list item click listener
         postListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int pos, long id){
-                infoTextView.setText(posts.get(pos));
+                infoTextView.setText(posts.get(pos).getTitle());
                 Intent intent = new Intent(BlogReader.this, ShowActivity.class);
-                intent.putExtra("item name", posts.get(pos));
+                intent.putExtra("post_id", posts.get(pos).getId());
                 startActivity(intent);
             }
         });
     }
 }
-

@@ -6,9 +6,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import java.util.ArrayList;
 import android.view.LayoutInflater;
+import nt.kont.blog.reader.Post;
 
 public class PostListAdapter extends BaseAdapter {
-    private ArrayList posts;
+    private ArrayList<Post> posts;
     private Context context;
 
     public PostListAdapter(Context _context, ArrayList _posts){
@@ -38,7 +39,7 @@ public class PostListAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.post_list_item, null);
         }
         TextView textView = (TextView) convertView.findViewById(R.id.postTextView);
-        textView.setText(String.valueOf(posts.get(position)));
+        textView.setText(String.valueOf(posts.get(position).getTitle()));
         return convertView;
     }
 }
