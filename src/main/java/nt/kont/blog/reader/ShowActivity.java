@@ -13,10 +13,20 @@ public class ShowActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show);
 
-        Post post = Post.getById(getIntent().getExtras().getInt("post_id"));
-        TextView title = (TextView)findViewById(R.id.titleTextView);
-        TextView body = (TextView)findViewById(R.id.bodyTextView);
-        title.setText(post.getTitle());
-        body.setText(post.getBody());
+        final TextView title = (TextView)findViewById(R.id.titleTextView);
+        final TextView body = (TextView)findViewById(R.id.bodyTextView);
+
+        Integer id = getIntent().getExtras().getInt("post_id");
+
+        Post.getById(id, this, new PostSuccess(){
+            public void onResponse(Post post){
+                title.setText(post.getTitle());
+                body.setText(post.getBody());
+            }
+        }, new PostError(){
+            public void onError(String error){
+                title.setText(error);
+            }
+        });
     }
 }

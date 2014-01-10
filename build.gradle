@@ -10,7 +10,12 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 'android-17'
-    buildToolsVersion '19.0.1'
+    buildToolsVersion '19.0.0'
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 19
+    }
 
     buildTypes {
         release {
@@ -18,4 +23,9 @@ android {
             proguardFile getDefaultProguardFile('proguard-android.txt')
         }
     }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:+'
+    compile project(':relatedProjects:volley')
 }

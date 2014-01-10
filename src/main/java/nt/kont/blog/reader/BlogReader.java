@@ -1,5 +1,7 @@
 package nt.kont.blog.reader;
 
+import android.util.Log;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +18,10 @@ import nt.kont.blog.reader.Post;
 
 public class BlogReader extends Activity
 {
+    private static final String TAG = BlogReader.class.getSimpleName();
+    private ArrayList<Post> posts;
+    private PostListAdapter adapter;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -26,11 +32,23 @@ public class BlogReader extends Activity
         ListView postListView = (ListView)findViewById(R.id.postListView);
         final TextView infoTextView = (TextView)findViewById(R.id.infoTextView);
 
-        final ArrayList<Post> posts = Post.getAll();
-        final PostListAdapter adapter;
+        posts = new ArrayList<Post>();
         adapter = new PostListAdapter(this, posts);
         postListView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+
+        Post.getAll(this, new PostsSuccess(){
+            public void onResponse(ArrayList<Post> response){
+                for (int i = 0; i < response.size(); i++){
+                    posts.add(response.get(i));
+                }
+                adapter.notifyDataSetChanged();
+                infoTextView.setText("got " + response.size() + " items");
+            }
+        }, new PostError(){
+            public void onError(String error){
+                infoTextView.setText(error);
+            }
+        });
 
         //list item click listener
         postListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
