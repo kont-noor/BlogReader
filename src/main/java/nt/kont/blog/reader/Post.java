@@ -1,4 +1,5 @@
 package nt.kont.blog.reader;
+import java.util.Collection;
 import java.util.ArrayList;
 import android.content.Context;
 
@@ -15,7 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 interface PostsSuccess{
-    void onResponse(ArrayList<Post> posts);
+    void onResponse(Collection<Post> posts);
 }
 
 interface PostSuccess{

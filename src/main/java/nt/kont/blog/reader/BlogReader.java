@@ -5,13 +5,16 @@ import android.util.Log;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.content.Context;
 
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import nt.kont.blog.reader.PostListAdapter;
 import nt.kont.blog.reader.Post;
@@ -21,6 +24,7 @@ public class BlogReader extends Activity
     private static final String TAG = BlogReader.class.getSimpleName();
     private ArrayList<Post> posts;
     private PostListAdapter adapter;
+    private Context context;
 
     /** Called when the activity is first created. */
     @Override
@@ -28,6 +32,7 @@ public class BlogReader extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        context = this;
 
         ListView postListView = (ListView)findViewById(R.id.postListView);
         final TextView infoTextView = (TextView)findViewById(R.id.infoTextView);
@@ -36,17 +41,16 @@ public class BlogReader extends Activity
         adapter = new PostListAdapter(this, posts);
         postListView.setAdapter(adapter);
 
-        Post.getAll(this, new PostsSuccess(){
-            public void onResponse(ArrayList<Post> response){
-                for (int i = 0; i < response.size(); i++){
-                    posts.add(response.get(i));
-                }
+        Post.getAll(context, new PostsSuccess(){
+            public void onResponse(Collection<Post> response){
+                posts.clear();
+                posts.addAll(response);
                 adapter.notifyDataSetChanged();
-                infoTextView.setText("got " + response.size() + " items");
+                Toast.makeText(context, "got " + response.size() + " items", Toast.LENGTH_LONG).show();
             }
         }, new PostError(){
             public void onError(String error){
-                infoTextView.setText(error);
+                Toast.makeText(context, error).show();
             }
         });
 
